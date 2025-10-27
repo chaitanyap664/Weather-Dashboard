@@ -1415,11 +1415,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Weather-Dashboard\\weatherdashboardapi\\WeatherDashboardAPI.csproj",
+      "projectUniqueName": "C:\\Weather-Dashboard\\WeatherDashboardAPI\\WeatherDashboardAPI.csproj",
       "projectName": "WeatherDashboardAPI",
-      "projectPath": "C:\\Weather-Dashboard\\weatherdashboardapi\\WeatherDashboardAPI.csproj",
+      "projectPath": "C:\\Weather-Dashboard\\WeatherDashboardAPI\\WeatherDashboardAPI.csproj",
       "packagesPath": "C:\\Users\\sahic\\.nuget\\packages\\",
-      "outputPath": "C:\\Weather-Dashboard\\weatherdashboardapi\\obj\\",
+      "outputPath": "C:\\Weather-Dashboard\\WeatherDashboardAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

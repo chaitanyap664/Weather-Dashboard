@@ -41,6 +41,7 @@ C:\Weather-Dashboard\WeatherDashboardAPI\obj\Debug\net8.0\WeatherDashboardAPI.As
 C:\Weather-Dashboard\WeatherDashboardAPI\obj\Debug\net8.0\WeatherDashboardAPI.csproj.CoreCompileInputs.cache
 C:\Weather-Dashboard\WeatherDashboardAPI\obj\Debug\net8.0\WeatherDashboardAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Weather-Dashboard\WeatherDashboardAPI\obj\Debug\net8.0\WeatherDashboardAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Weather-Dashboard\WeatherDashboardAPI\obj\Debug\net8.0\WeatherDashboardAPI.sourcelink.json
 C:\Weather-Dashboard\WeatherDashboardAPI\obj\Debug\net8.0\rjimswa.dswa.cache.json
 C:\Weather-Dashboard\WeatherDashboardAPI\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 C:\Weather-Dashboard\WeatherDashboardAPI\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json

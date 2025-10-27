@@ -10,7 +10,7 @@ using WeatherDashboardAPI.Models;
 namespace WeatherDashboardAPI.Tests
 {
     [TestFixture]
-    public class WeatherControllerTests
+    public class WeatherDashboardControllerTests
     {
         private Mock<IWeatherService> _mockService = null!;
         private Mock<ILogger<WeatherController>> _mockLogger = null!;

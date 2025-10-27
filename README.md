@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# Weather Dashboard
+## Weather Dashboard
 
 A **full-stack Weather Dashboard** built using **React (Vite)** on the front-end and **.NET 8 Web API (C#)** on the back-end.  
 It demonstrates clean architecture, async API integration, retry and caching patterns, and modern UI design — with complete unit & integration tests.
@@ -64,16 +63,22 @@ It demonstrates clean architecture, async API integration, retry and caching pat
 - .NET 8 SDK  
 - A free API key from [WeatherAPI.com](https://www.weatherapi.com/)  
 
-### Configuration
-Edit `appsettings.json`:
+## Configuration and Secrets Setup
 
-```json
-"WeatherSettings": {
-  "WeatherApiKey": "YOUR_API_KEY",
-  "APIBaseURL": "https://api.weatherapi.com/v1/forecast.json"
-},
-"AllowedOrigins": [ "http://localhost:5173" ]
-```
+The Weather Dashboard integrates with external weather APIs (such as **WeatherAPI** or **OpenWeather**) and requires an API key for fetching data.  
+For security reasons, **no real API keys or credentials are committed to this repository**.
+
+### 🔐 API Key Setup
+
+You must configure your own API key locally before running the backend.
+
+#### Option 1 — .NET User Secrets (Recommended)
+
+1. Open a terminal in the **API project folder** (e.g., `WeatherDashboardAPI/`):
+   ```bash
+  1) Open a terminal:  dotnet user-secrets init
+  2) Add your API key securely: dotnet user-secrets set "WeatherSettings:ApiKey" "<YOUR_API_KEY>"
+  3) Verify it was stored: dotnet user-secrets list
 
 ### Run the API
 ```bash

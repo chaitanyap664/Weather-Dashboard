@@ -1,0 +1,41 @@
+# ================================
+# .NET / C# / ASP.NET Core
+# ================================
+
+# Build output
+bin/
+obj/
+out/
+artifacts/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio working folders
+.vs/
+.vscode/
+.idea/
+*.code-workspace
+
+# Config & secrets
+.env
+.env.*
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+.nuget/
+project.lock.json
+
+# Other generated artifacts
+*.dll
+*.exe
+*.cache
+*.pdb
+*.pidb
+

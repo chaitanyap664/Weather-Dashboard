@@ -78,7 +78,7 @@ catch (TimeoutRejectedException ex)
         /// <summary>
         /// POST /weatherdashboard/default { city: "London" }
         /// </summary>
-        [HttpPost("default")]
+        [HttpPut("default")]
         public async Task<IActionResult> SetDefault([FromBody] DefaultCityModel model)
         {
             if (model == null || string.IsNullOrWhiteSpace(model.City))

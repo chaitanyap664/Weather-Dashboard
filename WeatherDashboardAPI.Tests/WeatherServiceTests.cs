@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -244,7 +244,7 @@ namespace WeatherDashboardAPI.Tests
                 APIBaseURL = "http://fake-api.com"
             });
 
-            // 👇 inject short TTL of 2 seconds
+            // inject short TTL of 2 seconds
             var service = new WeatherService(httpClient, cache, new NullLogger<WeatherService>(), options, TimeSpan.FromSeconds(2));
 
             // Act — first call (cache miss)
@@ -298,19 +298,55 @@ namespace WeatherDashboardAPI.Tests
             Assert.That(result, Is.Null, "Invalid city should return null");
         }
         [Test]
-public void Deserialize_WeatherApiResponse_WorksCorrectly()
+        public void Deserialize_WeatherApiResponse_WorksCorrectly()
         {
-        var basePath = AppContext.BaseDirectory;
-    var filePath = Path.Combine(basePath, "Samples", "weather_sample.json");
+            var basePath = AppContext.BaseDirectory;
+            var filePath = Path.Combine(basePath, "Samples", "weather_sample.json");
 
-    Assert.That(File.Exists(filePath), $"Sample file not found: {filePath}");
-     var json = File.ReadAllText(filePath);
-    var data = JsonSerializer.Deserialize<WeatherApiResponse>(json);
+            Assert.That(File.Exists(filePath), $"Sample file not found: {filePath}");
+            var json = File.ReadAllText(filePath);
+            var data = JsonSerializer.Deserialize<WeatherApiResponse>(json);
 
-    Assert.That(data, Is.Not.Null);
-    Assert.That(data.Location?.Name, Is.EqualTo("London"));
-    Assert.That(data.Current?.TempC, Is.EqualTo(18));
-}
+            Assert.That(data, Is.Not.Null);
+            Assert.That(data.Location?.Name, Is.EqualTo("London"));
+            Assert.That(data.Current?.TempC, Is.EqualTo(18));
+        }
+        [Test]
+        public async Task GetWeatherAsync_ReturnsNull_WhenProviderErrorFieldPresent()
+        {
+            var json = @"{ ""error"": { ""message"": ""Invalid API key"" } }";
+            var http = CreateMockHttpClient(json, HttpStatusCode.OK);
+            var svc = new WeatherService(http, _cache, new NullLogger<WeatherService>(), _options);
+
+            var result = await svc.GetWeatherAsync("London", 1);
+
+            Assert.That(result, Is.Null);
+        }
+        [Test]
+        public async Task GetWeatherAsync_ReturnsNull_OnTimeout()
+        {
+            var handler = new Mock<HttpMessageHandler>();
+            handler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .Returns(async () =>
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(10)); // exceed service timeout
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent(@"{}")
+                    };
+                });
+
+            var http = new HttpClient(handler.Object);
+            var svc = new WeatherService(http, _cache, new NullLogger<WeatherService>(), _options);
+
+            var result = await svc.GetWeatherAsync("London", 1);
+
+            Assert.That(result, Is.Null);
+        }
 
     }
 }

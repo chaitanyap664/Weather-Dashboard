@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FGJM1cmhgxM=",
+  "dgSpecHash": "NFAW7NWh/yI=",
   "success": true,
-  "projectFilePath": "C:\\Weather-Dashboard\\WeatherDashboardAPI\\WeatherDashboardAPI.csproj",
+  "projectFilePath": "c:\\Weather-Dashboard\\WeatherDashboardAPI\\WeatherDashboardAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sahic\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\sahic\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

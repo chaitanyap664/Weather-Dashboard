@@ -38,7 +38,7 @@ export async function getDefaultCity() {
 
 export async function setDefaultCity(city) {
   const res = await fetch(`${BASE_URL}/default`, {
-    method: "POST",
+    method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ city }),
   });
@@ -50,10 +50,10 @@ export async function setDefaultCity(city) {
     throw new Error(msg);
   }
 
-  // 🧠 Extract only city name safely
+  // Extract only city name safely
   const message = data?.message || "";
   const cityMatch = message.match(/'([^']+)'/); // capture what's inside quotes
   const cleanCity = cityMatch ? cityMatch[1] : city;
 
-  return cleanCity; // ✅ return only the clean city name
+  return cleanCity; // return only the clean city name
 }

@@ -2355,11 +2355,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Weather-Dashboard\\WeatherDashboardAPI.tests\\WeatherDashboardAPI.Tests.csproj",
+      "projectUniqueName": "C:\\Weather-Dashboard\\WeatherDashboardAPI.Tests\\WeatherDashboardAPI.Tests.csproj",
       "projectName": "WeatherDashboardAPI.Tests",
-      "projectPath": "C:\\Weather-Dashboard\\WeatherDashboardAPI.tests\\WeatherDashboardAPI.Tests.csproj",
+      "projectPath": "C:\\Weather-Dashboard\\WeatherDashboardAPI.Tests\\WeatherDashboardAPI.Tests.csproj",
       "packagesPath": "C:\\Users\\sahic\\.nuget\\packages\\",
-      "outputPath": "C:\\Weather-Dashboard\\WeatherDashboardAPI.tests\\obj\\",
+      "outputPath": "C:\\Weather-Dashboard\\WeatherDashboardAPI.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
