@@ -69,20 +69,34 @@ Weather-Dashboard/
 
 ## Configuration and Secrets Setup
 
-The Weather Dashboard integrates with external weather APIs (such as **WeatherAPI** or **OpenWeather**) and requires an API key for fetching data.  
+The Weather Dashboard integrates with external weather APIs (such as **WeatherAPI**) and requires an API key for fetching data.  
 For security reasons, **no real API keys or credentials are committed to this repository**.
 
-### 🔐 API Key Setup
+## 🔑 API Key Setup (WeatherAPI.com)
 
-You must configure your own API key locally before running the backend.
+This project uses the **[WeatherAPI.com](https://www.weatherapi.com/)** service to fetch live weather and forecast data.  
+You’ll need your own **free API key** to run the backend successfully.
 
-#### Option 1 — .NET User Secrets (Recommended)
+### 🪄 How to Get Your API Key
+1. Go to [https://www.weatherapi.com/](https://www.weatherapi.com/).
+2. Click **“Sign Up”** (it’s free).
+3. After signing in, open the **“My Account → API Keys”** section.
+4. Copy your personal API key — it will look like: 'abcd1234567890efghijklmnop';
 
-1. Open a terminal in the **API project folder** (e.g., `WeatherDashboardAPI/`):
-   ```bash
-  1) Open a terminal:  dotnet user-secrets init
-  2) Add your API key securely: dotnet user-secrets set "WeatherSettings:ApiKey" "<YOUR_API_KEY>"
-  3) Verify it was stored: dotnet user-secrets list
+### How to Configure the API Key
+
+#### Option 1 — Using `appsettings.json`
+Edit your file at:
+
+Replace the placeholder with your actual key:
+```json
+{
+  "WeatherSettings": {
+    "APIBaseURL": "https://api.weatherapi.com/v1/forecast.json",
+    "WeatherApiKey": "<YOUR_API_KEY>",
+    "CacheSeconds": 600
+  }
+}
 
 ### Run the API
 ```bash
@@ -192,11 +206,11 @@ This ensures the API:
 
 ## Future Enhancements
 
-- 🌐 Add Docker + Compose for single-command setup  
-- 🔐 Move API key to Azure Key Vault or `dotnet user-secrets`  
-- 📊 Add weather trend charts using Recharts  
-- 📈 Add SonarQube and CI/CD (Azure DevOps or GitHub Actions)  
-- ☁️ Deploy on Azure App Service + Static Web App combo  
+- Add Docker + Compose for single-command setup  
+- Move API key to Azure Key Vault or `dotnet user-secrets`  
+- Add weather trend charts using Recharts  
+- Add SonarQube and CI/CD (Azure DevOps or GitHub Actions)  
+- Deploy on Azure App Service + Static Web App combo  
 
 ---
 
