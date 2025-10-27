@@ -209,7 +209,7 @@ For learning and demonstration purposes only.
 
 ## Preview
 
-![Weather Dashboard Preview](./public/preview.png)
+![Weather Dashboard Preview](/weatherdashboard/public/preview.png)
 
 ---
 
