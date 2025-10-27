@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Weather Dashboard
 
 A **full-stack Weather Dashboard** built using **React (Vite)** on the front-end and **.NET 8 Web API (C#)** on the back-end.  
@@ -209,3 +210,6 @@ This project demonstrates:
 - Frontend state abstraction using custom hooks
 - Complete automated testing on both sides
 
+=======
+# Weather-Dashboard
+>>>>>>> 2159ebf975f7c2970d0a7ad7ec345b2a53aefbb1
