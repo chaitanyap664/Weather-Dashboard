@@ -24,7 +24,7 @@ namespace WeatherDashboardAPI.Services
         private readonly TimeSpan _cacheDuration;
 
         private readonly WeatherSettings _settings;
-        private const string DefaultCityKey = "DefaultCity";
+        private const string defaultCityKey = "DefaultCity";
         public WeatherService(HttpClient httpClient, IMemoryCache cache, ILogger<WeatherService> logger, IOptions<WeatherSettings> options, TimeSpan? cacheDuration = null)
         {
             _httpClient = httpClient;
@@ -132,7 +132,7 @@ namespace WeatherDashboardAPI.Services
         /// <summary>Retrieves the default city from the in-memory cache.</summary>
         public Task<string?> GetDefaultCityAsync()
         {
-            _cache.TryGetValue(DefaultCityKey, out string? city);
+            _cache.TryGetValue(defaultCityKey, out string? city);
             return Task.FromResult(city);
         }
         
@@ -142,7 +142,7 @@ namespace WeatherDashboardAPI.Services
             var validCity = await GetWeatherAsync(city, 1, ct);
             if (validCity == null)
                 return (false, $"City '{city}' is not valid.");
-            _cache.Set(DefaultCityKey, city, TimeSpan.FromDays(365));
+            _cache.Set(defaultCityKey, city, TimeSpan.FromDays(365));
             _logger.LogInformation("Default city set to {City}", city);
             return (true, $"'{city}' has been set as the default city.");
         }
