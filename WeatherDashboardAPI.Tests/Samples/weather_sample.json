@@ -1,0 +1,77 @@
+{
+  "location": {
+    "name": "London",
+    "region": "City of London, Greater London",
+    "country": "United Kingdom",
+    "lat": 51.52,
+    "lon": -0.11,
+    "tz_id": "Europe/London",
+    "localtime_epoch": 1698240000,
+    "localtime": "2025-10-25 09:00"
+  },
+  "current": {
+    "last_updated": "2025-10-25 09:00",
+    "temp_c": 18,
+    "condition": {
+      "text": "Partly cloudy",
+      "icon": "//cdn.weatherapi.com/weather/64x64/day/116.png",
+      "code": 1003
+    },
+    "wind_kph": 13,
+    "humidity": 72,
+    "cloud": 40,
+    "feelslike_c": 17.2,
+    "vis_km": 10
+  },
+  "forecast": {
+    "forecastday": [
+      {
+        "date": "2025-10-25",
+        "day": {
+          "maxtemp_c": 20.5,
+          "mintemp_c": 12.3,
+          "avgtemp_c": 16.2,
+          "condition": {
+            "text": "Sunny",
+            "icon": "//cdn.weatherapi.com/weather/64x64/day/113.png",
+            "code": 1000
+          }
+        },
+        "hour": [
+          {
+            "time": "2025-10-25 00:00",
+            "temp_c": 14,
+            "condition": {
+              "text": "Clear",
+              "icon": "//cdn.weatherapi.com/weather/64x64/night/113.png"
+            }
+          },
+          {
+            "time": "2025-10-25 06:00",
+            "temp_c": 12,
+            "condition": {
+              "text": "Mist",
+              "icon": "//cdn.weatherapi.com/weather/64x64/night/143.png"
+            }
+          },
+          {
+            "time": "2025-10-25 12:00",
+            "temp_c": 18,
+            "condition": {
+              "text": "Sunny",
+              "icon": "//cdn.weatherapi.com/weather/64x64/day/113.png"
+            }
+          },
+          {
+            "time": "2025-10-25 18:00",
+            "temp_c": 16,
+            "condition": {
+              "text": "Partly cloudy",
+              "icon": "//cdn.weatherapi.com/weather/64x64/day/116.png"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
