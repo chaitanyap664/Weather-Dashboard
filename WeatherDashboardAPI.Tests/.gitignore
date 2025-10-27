@@ -1,69 +1,19 @@
 # ==========================
-# .NET API + NUnit Projects
+# NUnit Projects
 # ==========================
 
 # Build results
 bin/
 obj/
-[Bb]uild/
-[Ll]og/
-*.log
 
-# User-specific files
-*.user
-*.suo
-*.userosscache
-*.sln.docstates
 
 # Visual Studio and VS Code
 .vscode/
 .vs/
 *.code-workspace
 
-# Resharper / Rider / other IDEs
-.idea/
-*.DotSettings.user
-
 # NuGet packages
 *.nupkg
 *.snupkg
 packages/
 .nuget/
-
-# Test results (NUnit, xUnit, MSTest)
-TestResult.xml
-TestResults/
-*.trx
-*.coverage
-*.coveragexml
-*.opencover.xml
-
-# Local coverage tools
-coverage*
-*.cobertura.xml
-*.html
-*.json
-*.xml
-
-# Temporary build / publish output
-.publish/
-artifacts/
-obj/
-bin/
-
-# Environment and secrets
-appsettings.Development.json
-appsettings.Local.json
-appsettings.*.local.json
-secrets.json
-*.env
-.env.*
-
-# Dotnet user-secrets folder (local machine)
-**/UserSecrets/
-
-# ==========================
-# React Frontend (Vite)
-# ==========================
-
-
