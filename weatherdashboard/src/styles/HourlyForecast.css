@@ -1,0 +1,58 @@
+.hourly-section {
+  margin-top: 24px;
+}
+
+.hourly-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+
+.hourly-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--ring);
+  border-radius: 16px;
+  width: 95px; /* fixed width ensures even alignment */
+  height: 200px;
+  display: flex;
+  margin-top: 15px;
+  flex-direction: column;
+  flex-wrap:wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hourly-card:hover {
+  transform: translateY(-3px);
+}
+.hourly-icon {
+  width: 48px;
+  height: 48px;
+}
+.hour {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.hour-temp {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.no-forecast {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin-top: 10px;
+}
+@media (max-width: 680px) {
+  .hourly-card,
+  .daily-card {
+    width: 45%;
+    padding: 10px;
+  }
+}

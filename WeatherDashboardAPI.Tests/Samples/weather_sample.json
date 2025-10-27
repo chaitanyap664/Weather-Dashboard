@@ -1,0 +1,23 @@
+{
+  "location": { "name": "London" },
+  "current": {
+    "temp_c": 18,
+    "humidity": 60,
+    "wind_kph": 15,
+    "condition": { "text": "Cloudy", "icon": "//cdn.weatherapi.com/cloud.png" }
+  },
+  "forecast": {
+    "forecastday": [
+      {
+        "date": "2025-10-26",
+        "day": {
+          "avgtemp_c": 18,
+          "condition": { "text": "Cloudy", "icon": "//cdn.weatherapi.com/cloud.png" }
+        },
+        "hour": [
+          { "time": "2025-10-26 00:00", "temp_c": 18, "condition": { "icon": "//cdn.weatherapi.com/cloud.png" } }
+        ]
+      }
+    ]
+  }
+}

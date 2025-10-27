@@ -1,0 +1,105 @@
+.weather-details {
+  position: relative;
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  color: #0f172a;
+  background: linear-gradient(135deg, #e0f2fe, #f8fafc);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: background 0.5s ease, box-shadow 0.3s ease;
+}
+
+/* Weather Icon */
+.weather-details .weather-icon {
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: 0 auto 0.5rem auto;
+}
+
+/* City & Temp */
+.weather-details .city {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.weather-details .temperature {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin: 0.5rem 0;
+}
+
+/* Meta Info Row */
+.weather-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.2rem;
+  padding: 0 1.5rem;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.weather-meta div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Description */
+.weather-details .description {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #475569;
+  margin-top: 0.5rem;
+}
+
+/* Dynamic Backgrounds */
+.weather-sunny {
+  background: linear-gradient(135deg, #fef9c3, #fde68a);
+}
+
+.weather-cloudy {
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+}
+
+.weather-rainy {
+  background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+}
+
+.weather-stormy {
+  background: linear-gradient(135deg, #94a3b8, #64748b);
+  color: #f8fafc;
+}
+
+.weather-clear {
+  background: linear-gradient(135deg, #bae6fd, #7dd3fc);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .weather-details {
+    padding: 1rem;
+  }
+
+  .weather-details .weather-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .weather-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .temperature {
+    font-size: 1.5rem;
+  }
+
+  .city {
+    font-size: 1.25rem;
+  }
+}
