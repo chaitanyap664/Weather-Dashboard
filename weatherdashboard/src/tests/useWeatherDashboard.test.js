@@ -7,7 +7,7 @@ vi.mock("../api/WeatherService");
 
 describe("useWeatherDashboard", () => {
   it("fetches weather successfully", async () => {
-    WeatherService.getWeatherAndForecast.mockResolvedValueOnce({
+    WeatherService.fetchDefaultCityAsync.mockResolvedValueOnce({
       city: "London",
       temperature: 20,
       humidity: 70,

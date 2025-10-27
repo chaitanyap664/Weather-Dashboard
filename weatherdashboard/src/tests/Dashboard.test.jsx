@@ -8,9 +8,9 @@ import * as WeatherService from "../api/WeatherService";
 
 //Mock the WeatherService module
 vi.mock("../api/WeatherService", () => ({
-  getWeatherAndForecast: vi.fn(),
-  setDefaultCity: vi.fn(),
-   getDefaultCity: vi.fn(),
+  fetchDefaultCityAsync: vi.fn(),
+  updateDefaultCityAsync: vi.fn(),
+   fetchWeatherAsync: vi.fn(),
 }));
 
 const renderWithContext = (ui) => {
@@ -29,7 +29,7 @@ describe("Dashboard", () => {
   });
 
   it("loads weather after searching a city", async () => {
-    WeatherService.getWeatherAndForecast.mockResolvedValue({
+    WeatherService.fetchWeatherAsync.mockResolvedValue({
       city: "London",
       temperature: 20,
       humidity: 60,
@@ -65,8 +65,8 @@ describe("Dashboard", () => {
   });
 
   it("sets default city and shows success message", async () => {
-    WeatherService.setDefaultCity.mockResolvedValue("Paris");
-    WeatherService.getWeatherAndForecast.mockResolvedValue({
+    WeatherService.updateDefaultCityAsync.mockResolvedValue("Paris");
+    WeatherService.fetchDefaultCityAsync.mockResolvedValue({
       city: "Paris",
       temperature: 24,
       humidity: 55,
@@ -84,7 +84,7 @@ describe("Dashboard", () => {
     fireEvent.click(screen.getByRole("button", { name: /set default/i }));
 
     await waitFor(() =>
-      expect(WeatherService.setDefaultCity).toHaveBeenCalledWith("Paris")
+      expect(WeatherService.updateDefaultCityAsync).toHaveBeenCalledWith("Paris")
     );
 
     expect(await screen.findByText(/has been set as your default city/i)).toBeInTheDocument();
@@ -105,6 +105,6 @@ describe("Dashboard", () => {
   });
 
   // Verify WeatherService.setDefaultCity is NOT called
-  expect(WeatherService.setDefaultCity).not.toHaveBeenCalled();
+  expect(WeatherService.updateDefaultCityAsync).not.toHaveBeenCalled();
 });
 });
