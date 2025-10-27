@@ -5,6 +5,7 @@ using WeatherDashboardAPI.Models;
 using Polly.Extensions.Http;
 using Polly;
 using System.Net;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,15 @@ builder.Services.AddControllers()
 
 //Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(o =>
+{
+    o.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Weather Dashboard API",
+        Version = "v1",
+        Description = "API for fetching and caching weather information."
+    });
+});
 builder.Services.AddAutoMapper(typeof(Program));
 
 //CORS configuration
@@ -76,10 +85,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+      app.UseSwaggerUI(o =>
+    {
+        o.SwaggerEndpoint("/swagger/v1/swagger.json", "Weather Dashboard API v1");
+        // o.RoutePrefix = string.Empty; // optional: serve UI at "/"
+    });
 }
-
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();  // Disabled for local demo simplicity
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.MapControllers();

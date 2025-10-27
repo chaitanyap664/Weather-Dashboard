@@ -1,4 +1,4 @@
-import '../styles/weather.css';
+import '../styles/WeatherDetails.css';
 
 /**
  * Displays weather data
@@ -15,7 +15,7 @@ export default function WeatherDetails({ weather }){
     <div className={`weather-details ${bgClass}`}>
       <img src={weather.icon} alt={weather.description} className="weather-icon" />
       <div className="city" data-testid="city">{weather.city}</div>
-      <div className="temperature" data-testid="temp">{weather.temp}°C</div>
+      <div className="temperature" data-testid="temp">{Math.round(weather.temp)}°C</div>
       <div className="description" data-testid="desc">{weather.description}</div>
 
       <div className="weather-meta">

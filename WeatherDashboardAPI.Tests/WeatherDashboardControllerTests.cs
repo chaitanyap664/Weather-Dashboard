@@ -1,46 +1,64 @@
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using WeatherDashboardAPI.Controllers;
+using WeatherDashboardAPI.DTO;
 using WeatherDashboardAPI.Interfaces;
 using WeatherDashboardAPI.Models;
+using WeatherDashboardAPI.Services;
 
 namespace WeatherDashboardAPI.Tests
 {
     [TestFixture]
     public class WeatherDashboardControllerTests
     {
-        private Mock<IWeatherService> _mockService = null!;
-        private Mock<ILogger<WeatherController>> _mockLogger = null!;
-        private WeatherController _controller = null!;
+        private Mock<IWeatherService> _mockService;
+        private Mock<IMapper> _mockMapper;
+        private WeatherDashboardController _controller;
 
         [SetUp]
         public void Setup()
         {
             _mockService = new Mock<IWeatherService>();
-            _mockLogger = new Mock<ILogger<WeatherController>>();
-            _controller = new WeatherController(_mockService.Object, _mockLogger.Object);
+            _mockMapper = new Mock<IMapper>();
+            _controller = new WeatherDashboardController(
+                _mockService.Object,
+                _mockMapper.Object,
+                NullLogger<WeatherDashboardController>.Instance);
         }
 
         [Test]
         public async Task GetWeather_ReturnsOk_WhenCityFound()
         {
+            var city = "London";
             // Arrange
             var weather = new WeatherInfo
             {
-                City = "London",
+                City = city,
                 Temperature = 20,
                 Description = "Sunny",
                 Humidity = 50,
                 WindSpeed = 5
             };
 
-            _mockService
-                .Setup(s => s.GetWeatherAsync("London", It.IsAny<int>()))
-                .ReturnsAsync(weather);
-
+            _mockService.Setup(s => s.GetWeatherAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
+             .ReturnsAsync(weather);
+            _mockMapper.Setup(m => m.Map<WeatherResponseDto>(It.IsAny<WeatherInfo>()))
+              .Returns(new WeatherResponseDto
+              {
+                  City = "London",
+                  Temperature = 20,
+                  Description = "Sunny"
+              });
             // Act
             var result = await _controller.Get("London");
 
@@ -48,6 +66,7 @@ namespace WeatherDashboardAPI.Tests
             Assert.That(result, Is.TypeOf<OkObjectResult>());
             var okResult = result as OkObjectResult;
             Assert.That(okResult?.Value, Is.Not.Null);
+            Assert.That(((WeatherResponseDto)okResult.Value!).City, Is.EqualTo(city));
         }
 
         [Test]
@@ -55,14 +74,14 @@ namespace WeatherDashboardAPI.Tests
         {
             // Arrange: simulate invalid city
             _mockService
-                .Setup(s => s.GetWeatherAsync("InvalidCity", It.IsAny<int>()))
+                .Setup(s => s.GetWeatherAsync("InvalidCity", 1, It.IsAny<CancellationToken>()))
                 .ReturnsAsync((WeatherInfo?)null);
 
             // Act
             var result = await _controller.Get("InvalidCity");
 
             // Assert
-            Assert.That(result, Is.TypeOf<NotFoundObjectResult>(), 
+            Assert.That(result, Is.TypeOf<NotFoundObjectResult>(),
                 "Should return 404 NotFound for invalid city.");
 
             var notFound = result as NotFoundObjectResult;
@@ -79,5 +98,35 @@ namespace WeatherDashboardAPI.Tests
             Assert.That(result, Is.TypeOf<BadRequestObjectResult>(),
                 "Should return 400 BadRequest when no city is provided.");
         }
+        [Test]
+        public async Task GetWeatherAsync_ReturnsNull_OnTimeout()
+        {
+            // Arrange
+            var handler = new Mock<HttpMessageHandler>();
+            handler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>()
+                )
+                .ThrowsAsync(new TaskCanceledException()); // simulate timeout
+
+            var httpClient = new HttpClient(handler.Object);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var options = Options.Create(new WeatherSettings
+            {
+                WeatherApiKey = "fake-key",
+                APIBaseURL = "http://fake-api.com"
+            });
+            var service = new WeatherService(httpClient, cache, new NullLogger<WeatherService>(), options);
+
+            // Act
+            var result = await service.GetWeatherAsync("London", 1);
+
+            // Assert
+            Assert.That(result, Is.Null, "Expected null on timeout, not exception.");
+        }
+
+
     }
 }

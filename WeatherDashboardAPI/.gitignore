@@ -2,25 +2,26 @@
 # .NET / C# / ASP.NET Core
 # ================================
 
-# Build output
+# Build & cache
 bin/
 obj/
-out/
-artifacts/
-
-# User-specific files
 *.user
 *.suo
-*.userosscache
-*.sln.docstates
-
-# Visual Studio working folders
-.vs/
+*.vs
 .vscode/
-.idea/
-*.code-workspace
+
+# Environment & secrets
+.env
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+secrets.json
 
 # Config & secrets
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.secrets.json
+secrets.json
 .env
 .env.*
 

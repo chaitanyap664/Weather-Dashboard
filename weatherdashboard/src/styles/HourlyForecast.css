@@ -1,3 +1,5 @@
+/* Hourly Forecast CSS */
+
 .hourly-section {
   margin-top: 24px;
 }
@@ -13,7 +15,7 @@
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--ring);
   border-radius: 16px;
-  width: 95px; /* fixed width ensures even alignment */
+  width: 95px;
   height: 200px;
   display: flex;
   margin-top: 15px;

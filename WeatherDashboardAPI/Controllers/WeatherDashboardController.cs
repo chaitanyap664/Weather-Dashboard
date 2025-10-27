@@ -7,14 +7,14 @@ using Polly.Timeout;
 namespace WeatherDashboardAPI.Controllers
 {
     /// <summary>
-/// Handles incoming HTTP requests related to weather information.
-/// </summary>
-/// <remarks>
-/// The <see cref="WeatherDashboardController"/> acts as the entry point for clients (e.g., the React frontend)  
-/// to request weather data by city, manage default locations, and retrieve forecasts.  
-/// It delegates all business logic to the <see cref="IWeatherService"/> implementation and  
-/// ensures consistent HTTP responses (200, 400, 404, 500).
-/// </remarks>
+    /// Handles incoming HTTP requests related to weather information.
+    /// </summary>
+    /// <remarks>
+    /// The <see cref="WeatherDashboardController"/> acts as the entry point for clients (e.g., the React frontend)  
+    /// to request weather data by city, manage default locations, and retrieve forecasts.  
+    /// It delegates all business logic to the <see cref="IWeatherService"/> implementation and  
+    /// ensures consistent HTTP responses (200, 400, 404, 500).
+    /// </remarks>
 
     [ApiController]
     [Route("[controller]")]
@@ -58,11 +58,11 @@ namespace WeatherDashboardAPI.Controllers
                 _logger.LogWarning(ex, "Invalid city request: {City}", city);
                 return BadRequest(new { message = ex.Message });
             }
-catch (TimeoutRejectedException ex)
-{
-    _logger.LogWarning(ex, "Weather API timed out for city {City}", city);
-    return StatusCode(504, new { message = "Weather service timed out, please try again." });
-}
+            catch (TimeoutRejectedException ex)
+            {
+                _logger.LogWarning(ex, "Weather API timed out for city {City}", city);
+                return StatusCode(504, new { message = "Weather service timed out, please try again." });
+            }
             catch (HttpRequestException ex)
             {
                 _logger.LogError(ex, "Network error while fetching weather for {City}", city);
@@ -110,8 +110,17 @@ catch (TimeoutRejectedException ex)
         [HttpGet("default")]
         public async Task<IActionResult> GetDefault()
         {
-            var city = await _service.GetDefaultCityAsync();
-            return Ok(new { city });
+            try
+            {
+                var city = await _service.GetDefaultCityAsync();
+                return Ok(new { city });
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error getting default city");
+                return StatusCode(500, new { message = "Unexpected error occurred." });
+                
+            }
         }
     }
 

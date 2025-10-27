@@ -30,7 +30,7 @@ It demonstrates clean architecture, async API integration, retry and caching pat
 ## Architecture Overview
 
 ```
-/WeatherDashboard
+Weather-Dashboard/
 │
 ├── WeatherDashboardAPI/             # .NET 8 Web API
 │   ├── Controllers/
@@ -38,7 +38,6 @@ It demonstrates clean architecture, async API integration, retry and caching pat
 │   ├── Models/
 │   ├── Services/
 │   ├── Interfaces/
-│   ├── Tests/ (NUnit)
 │   └── Program.cs
 │
 ├── weatherdashboard/                # React Frontend (Vite)
@@ -48,10 +47,15 @@ It demonstrates clean architecture, async API integration, retry and caching pat
 │   │   ├── context/WeatherContext.jsx
 │   │   ├── hooks/useWeatherDashboard.js
 │   │   ├── pages/Dashboard.jsx
-│   │   ├── styles/Dashboard.css
-│   │   └── tests/
+│   │   └── styles/Dashboard.css
 │   └── vite.config.js
 │
+├── weatherdashboardapi.tests/       # NUnit test project
+│   ├── WeatherServiceTests.cs
+│   ├── WeatherDashboardControllerTests.cs
+│   └── WeatherDashboardAPI.Tests.csproj
+│
+├── .gitignore
 └── README.md
 ```
 
@@ -86,8 +90,8 @@ cd WeatherDashboardAPI
 dotnet restore
 dotnet run
 ```
-
-Swagger UI → [https://localhost:7231/swagger](https://localhost:7231/swagger)
+The Swagger URL will automatically open using the below URL - 
+Swagger UI → [http://localhost:5172/swagger/](http://localhost:5172/swagger/)
 
 ---
 
@@ -108,12 +112,15 @@ The app runs at [http://localhost:5173](http://localhost:5173)
 
 If the API runs on a different port, set this in `.env`:
 ```bash
-VITE_API_BASE_URL=https://localhost:7231
+VITE_API_BASE_URL=http://localhost:5172
+
+> Note: For local testing, the API runs on **http://localhost:5172** (HTTPS disabled for simplicity).  
+> In a production environment, `UseHttpsRedirection()` can be re-enabled and certificates trusted.
 ```
 
 ---
 
-## esting
+## Testing
 
 ### Backend Tests (NUnit)
 Run all tests:
@@ -217,4 +224,3 @@ This project demonstrates:
 
 =======
 # Weather-Dashboard
->>>>>>> 2159ebf975f7c2970d0a7ad7ec345b2a53aefbb1

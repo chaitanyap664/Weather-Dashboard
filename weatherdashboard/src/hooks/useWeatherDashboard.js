@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useWeather } from "../context/WeatherContext";
 import {
-  getWeatherAndForecast,
-  setDefaultCity,
-  getDefaultCity,
+  fetchWeatherAsync,
+  updateDefaultCityAsync,
+  fetchDefaultCityAsync,
 } from "../api/WeatherService";
 
 /**
@@ -55,12 +55,13 @@ export function useWeatherDashboard() {
       clearWeather();
       return;
     }
-
+      // prevent concurrent requests
+    if (loading) return;
+    setLoading(true);
+    setMessage("");
+    setError("");
     try {
-      setLoading(true);
-      setError("");
-
-      const data = await getWeatherAndForecast(enteredCity);
+      const data = await fetchWeatherAsync(enteredCity);
       const newWeather = {
         city: data?.city ?? enteredCity,
         temp: data?.temperature ?? 0,
@@ -89,29 +90,37 @@ export function useWeatherDashboard() {
       showTempMessage("Please enter a city before setting default.", "error");
       return;
     }
-
+       if (loading) return;
+    setLoading(true);
+    setMessage("");
+    setError("");
     try {
-      const savedCity = await setDefaultCity(enteredCity);
+      const savedCity = await updateDefaultCityAsync(enteredCity);
       showTempMessage(`'${savedCity}' has been set as your default city.`);
     } catch (err) {
       showTempMessage(err?.message || "Failed to set default city.", "error");
-    }
+    }finally {
+    setLoading(false);
+  }
   };
 
   // Load the default city on mount
-  useEffect(() => {
-    (async () => {
-      try {
-        const city = await getDefaultCity();
-        if (city) {
-          await fetchWeather(city);
-          showTempMessage(`Showing weather for your default city: ${city}`);
-        }
-      } catch {
-        // No default city set — ignore
+ useEffect(() => {
+  let isMounted = true;
+  (async () => {
+    try {
+      const city = await fetchDefaultCityAsync();
+      if (isMounted && city) {
+        await fetchWeather(city);
+        showTempMessage(`Showing weather for your default city: ${city}`);
       }
-    })();
-  }, []);
+    } catch {
+      // ignore
+    }
+  })();
+
+  return () => { isMounted = false; };
+}, []);
 
   return {
     loading,

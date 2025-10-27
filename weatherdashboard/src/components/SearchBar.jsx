@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "../styles/search.css";
+import { useState } from "react";
+import "../styles/SearchBar.css";
 
 /**
  * SearchBar Component
@@ -8,7 +8,7 @@ import "../styles/search.css";
  * @param {Function} onSearch - Triggered when user clicks "Search"
  * @param {Function} onSetDefault - Triggered when user clicks "Set Default"
  */
-export default function SearchBar({ onSearch, onSetDefault }) {
+export default function SearchBar({ onSearch, onSetDefault, loading }) {
   const [city, setCity] = useState("");
 
   const handleSubmit = (e) => {
@@ -34,6 +34,7 @@ export default function SearchBar({ onSearch, onSetDefault }) {
       <button
         type="submit"
         className="search-btn"
+        disabled={loading}
       >
         Search
       </button>
@@ -41,9 +42,11 @@ export default function SearchBar({ onSearch, onSetDefault }) {
         type="button"
         className="search-btn secondary"
         onClick={handleSetDefault}
+        disabled={loading}
       >
         Set Default
       </button>
+      
     </form>
   );
 }
