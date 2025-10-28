@@ -162,7 +162,7 @@ The app runs at [http://localhost:5173](http://localhost:5173)
 
 If the API runs on a different port, set this in `.env`:
 ```bash
-VITE_API_BASE_URL=http://localhost:5172
+VITE_API_BASE_URL=http://localhost:5172/weatherdashboard
 
 > Note: For local testing, the API runs on **http://localhost:5172** (HTTPS disabled for simplicity).  
 > In a production environment, `UseHttpsRedirection()` can be re-enabled and certificates trusted.
