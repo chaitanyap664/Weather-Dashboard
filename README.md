@@ -10,7 +10,7 @@ It demonstrates clean architecture, async API integration, retry and caching pat
 ### Frontend (React)
 - Built with **Vite + React 18** for fast development
 - Uses **Context API + Custom Hook (useWeatherDashboard)** for state management
-- Provides **hourly and 7-day forecasts**
+- Provides **hourly and 6-day forecasts**
 - Fully **responsive** with **internal CSS (no Tailwind/PostCSS)**
 - Displays clear **success/error messages** with smooth fade animations
 - Allows setting and persisting a **default city**
