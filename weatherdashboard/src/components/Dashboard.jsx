@@ -1,3 +1,35 @@
+/**
+ * @component Dashboard
+ *
+ * @description
+ * The main container component of the Weather Dashboard application.
+ * It orchestrates all key UI sections — including the search bar, weather details,
+ * hourly forecast, and 5-day forecast — while managing state and data flow
+ * through custom hooks and context.
+ *
+ * This component:
+ * - Fetches and displays current, hourly, and daily weather data.
+ * - Handles loading, success, and error states gracefully.
+ * - Allows users to search for a city or set a default city.
+ *
+ * It consumes shared weather data via the {@link WeatherContext} and
+ * handles business logic through the {@link useWeatherDashboard} custom hook.
+ *
+ * @returns {JSX.Element} The main weather dashboard UI, including search,
+ * notifications, and conditional rendering for weather information.
+ *
+ * @example
+ * // Rendered automatically as the root route or main page of the app
+ * <Dashboard />
+ *
+ * @see useWeatherDashboard
+ * @see WeatherContext
+ * @see SearchBar
+ * @see WeatherDetails
+ * @see Hourly
+ * @see Forecast
+ */
+
 import { useWeather } from "../context/WeatherContext";
 import { useWeatherDashboard } from "../hooks/useWeatherDashboard";
 import SearchBar from "../components/SearchBar";

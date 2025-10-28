@@ -1,3 +1,36 @@
+/**
+ * @component HourlyForecast
+ *
+ * @description
+ * Displays the next 12 hours of weather data, including time, temperature, 
+ * and condition icons. The component is purely presentational and 
+ * renders horizontally scrollable forecast cards.
+ *
+ * If hourly data is missing or empty, it shows a user-friendly fallback message.
+ *
+ * This component is typically used within the {@link Dashboard} layout, 
+ * receiving its data through the WeatherContext and WeatherService layers.
+ *
+ * @param {Object[]} hourly - Array of hourly forecast data objects.
+ * @param {string} hourly[].time - The forecasted hour (e.g., "13:00").
+ * @param {number} hourly[].temp - The temperature in °C at that hour.
+ * @param {string} hourly[].icon - The icon URL representing weather conditions.
+ *
+ * @returns {JSX.Element} A horizontally scrollable list of hourly weather cards 
+ * or a message when no data is available.
+ *
+ * @example
+ * const hourlyData = [
+ *   { time: "09:00", temp: 18, icon: "https://cdn.weatherapi.com/icons/sunny.png" },
+ *   { time: "10:00", temp: 19, icon: "https://cdn.weatherapi.com/icons/cloudy.png" },
+ * ];
+ * 
+ * <HourlyForecast hourly={hourlyData} />
+ *
+ * @see Dashboard
+ * @see WeatherContext
+ */
+
 import "../styles/HourlyForecast.css";
 
 export default function HourlyForecast({ hourly }) {

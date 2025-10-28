@@ -1,8 +1,46 @@
-import '../styles/WeatherDetails.css';
-
 /**
- * Displays weather data
+ * @component WeatherDetails
+ *
+ * @description
+ * Displays the main weather information for the selected or default city,
+ * including temperature, condition, humidity, and wind speed.
+ * 
+ * The component also adjusts its background style dynamically based on
+ * the weather description (e.g., sunny, cloudy, rainy), improving visual feedback.
+ *
+ * It is a purely presentational component that receives weather data
+ * from the parent (typically {@link Dashboard}) via props connected to
+ * the WeatherContext and WeatherService layers.
+ *
+ * @param {Object} weather - The weather data object to display.
+ * @param {string} weather.city - The name of the city.
+ * @param {number} weather.temp - The current temperature in °C.
+ * @param {string} weather.description - Short text describing the weather condition.
+ * @param {string} weather.icon - URL of the weather condition icon.
+ * @param {number} weather.humidity - Current humidity percentage.
+ * @param {number} weather.windSpeed - Current wind speed in km/h.
+ *
+ * @returns {JSX.Element|null} The formatted weather details section,
+ * or null if no weather data is available.
+ *
+ * @example
+ * const sampleWeather = {
+ *   city: "London",
+ *   temp: 18,
+ *   description: "Partly Cloudy",
+ *   icon: "https://cdn.weatherapi.com/icons/cloudy.png",
+ *   humidity: 70,
+ *   windSpeed: 12
+ * };
+ * 
+ * <WeatherDetails weather={sampleWeather} />
+ *
+ * @see Dashboard
+ * @see WeatherContext
  */
+
+
+import '../styles/WeatherDetails.css';
 export default function WeatherDetails({ weather }){
   if (!weather) return null;
   const desc = weather.description?.toLowerCase() || "";
