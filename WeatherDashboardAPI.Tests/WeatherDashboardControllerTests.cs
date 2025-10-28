@@ -18,13 +18,19 @@ using WeatherDashboardAPI.Services;
 
 namespace WeatherDashboardAPI.Tests
 {
+     /// <summary>
+    /// Unit tests for <see cref="WeatherDashboardController"/> verifying endpoint behaviors,
+    /// response codes, and integration with <see cref="IWeatherService"/>.
+    /// </summary>
     [TestFixture]
     public class WeatherDashboardControllerTests
     {
         private Mock<IWeatherService> _mockService;
         private Mock<IMapper> _mockMapper;
         private WeatherDashboardController _controller;
-
+         /// <summary>
+        /// Initializes the controller and its mock dependencies before each test.
+        /// </summary>
         [SetUp]
         public void Setup()
         {
@@ -35,7 +41,11 @@ namespace WeatherDashboardAPI.Tests
                 _mockMapper.Object,
                 NullLogger<WeatherDashboardController>.Instance);
         }
-
+        
+        /// <summary>
+        /// Verifies that <see cref="WeatherDashboardController.Get"/> returns
+        /// <see cref="OkObjectResult"/> (HTTP 200) when a valid city is found.
+        /// </summary>
         [Test]
         public async Task GetWeather_ReturnsOk_WhenCityFound()
         {
@@ -68,7 +78,10 @@ namespace WeatherDashboardAPI.Tests
             Assert.That(okResult?.Value, Is.Not.Null);
             Assert.That(((WeatherResponseDto)okResult.Value!).City, Is.EqualTo(city));
         }
-
+            /// <summary>
+        /// Ensures <see cref="WeatherDashboardController.Get"/> returns
+        /// <see cref="NotFoundObjectResult"/> (HTTP 404) for an invalid city.
+        /// </summary>
         [Test]
         public async Task GetWeather_ReturnsNotFound_WhenCityInvalid()
         {
@@ -87,7 +100,10 @@ namespace WeatherDashboardAPI.Tests
             var notFound = result as NotFoundObjectResult;
             Assert.That(notFound?.Value?.ToString(), Does.Contain("not found"));
         }
-
+        /// <summary>
+        /// Ensures <see cref="WeatherDashboardController.Get"/> returns
+        /// <see cref="BadRequestObjectResult"/> (HTTP 400) when the city parameter is empty.
+        /// </summary>
         [Test]
         public async Task GetWeather_ReturnsBadRequest_WhenCityIsEmpty()
         {
@@ -98,6 +114,10 @@ namespace WeatherDashboardAPI.Tests
             Assert.That(result, Is.TypeOf<BadRequestObjectResult>(),
                 "Should return 400 BadRequest when no city is provided.");
         }
+         /// <summary>
+        /// Verifies that the underlying <see cref="WeatherService.GetWeatherAsync"/> 
+        /// handles <see cref="TaskCanceledException"/> (timeouts) gracefully without throwing.
+        /// </summary>
         [Test]
         public async Task GetWeatherAsync_ReturnsNull_OnTimeout()
         {

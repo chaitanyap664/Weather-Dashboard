@@ -16,12 +16,18 @@ using WeatherDashboardAPI.DTO;
 
 namespace WeatherDashboardAPI.Tests
 {
+     /// <summary>
+    /// Unit test suite for verifying the behavior of the <see cref="WeatherService"/> class.
+    /// Ensures correct caching, API interaction, and error handling.
+    /// </summary>
     [TestFixture]
     public class WeatherServiceTests
     {
         private IMemoryCache _cache = null!;
         private IOptions<WeatherSettings> _options = null!;
-
+        /// <summary>
+        /// Initializes common dependencies before each test.
+        /// </summary>
         [SetUp]
         public void Setup()
         {
@@ -29,16 +35,20 @@ namespace WeatherDashboardAPI.Tests
             _options = Options.Create(new WeatherSettings
             {
                 WeatherApiKey = "fake-key",
-                APIBaseURL = "http://api.weatherapi.com/v1/" // ✅ ensure trailing slash
+                APIBaseURL = "http://api.weatherapi.com/v1/" // ensure trailing slash
             });
         }
-
+        /// <summary>
+        /// Cleans up in-memory cache after each test.
+        /// </summary>
         [TearDown]
         public void Cleanup()
         {
             _cache.Dispose();
         }
-
+         /// <summary>
+        /// Creates a mock <see cref="HttpClient"/> that returns a given JSON response and status code.
+        /// </summary>
         private static HttpClient CreateMockHttpClient(string jsonResponse, HttpStatusCode code = HttpStatusCode.OK)
         {
             var handler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
@@ -56,7 +66,9 @@ namespace WeatherDashboardAPI.Tests
 
             return new HttpClient(handler.Object);
         }
-
+         /// <summary>
+        /// Verifies that <see cref="WeatherService.GetWeatherAsync"/> correctly parses and returns valid weather data.
+        /// </summary>
         [Test]
         public async Task GetWeatherAsync_ReturnsParsedWeather_WhenApiSucceeds()
         {
@@ -96,7 +108,9 @@ namespace WeatherDashboardAPI.Tests
             Assert.That(result.Temperature, Is.EqualTo(20));
             Assert.That(result.Description, Does.Contain("Cloudy"));
         }
-
+        /// <summary>
+        /// Ensures that a valid city is cached when <see cref="WeatherService.SetDefaultCityAsync"/> succeeds.
+        /// </summary>
         [Test]
         public async Task SetDefaultCityAsync_SavesToCache_IfValidCity()
         {
@@ -117,7 +131,9 @@ namespace WeatherDashboardAPI.Tests
             var cached = await service.GetDefaultCityAsync();
             Assert.That(cached, Is.EqualTo("Paris"));
         }
-
+        /// <summary>
+        /// Ensures that invalid cities are rejected and not cached.
+        /// </summary>
         [Test]
         public async Task SetDefaultCityAsync_ReturnsValidationMessage_IfCityInvalid()
         {
@@ -138,7 +154,10 @@ namespace WeatherDashboardAPI.Tests
             var cached = await service.GetDefaultCityAsync();
             Assert.That(cached, Is.Null.Or.Empty);
         }
-
+        
+        /// <summary>
+        /// Ensures that <see cref="WeatherService.GetDefaultCityAsync"/> returns null if no city is cached.
+        /// </summary>
         [Test]
         public async Task GetDefaultCityAsync_ReturnsNull_WhenNotSet()
         {
@@ -150,7 +169,9 @@ namespace WeatherDashboardAPI.Tests
 
             Assert.That(city, Is.Null);
         }
-
+         /// <summary>
+        /// Ensures that a cached result is used on the second API call (no redundant API requests).
+        /// </summary>
         [Test]
         public async Task GetWeatherAsync_UsesCache_OnSecondCall()
         {
@@ -207,7 +228,9 @@ namespace WeatherDashboardAPI.Tests
             // Extra: confirm same reference
             Assert.That(ReferenceEquals(result1, result2), Is.True, "Cached result should be same object instance");
         }
-
+         /// <summary>
+        /// Ensures that after cache expiration, the API is called again.
+        /// </summary>
         [Test]
         public async Task GetWeatherAsync_CallsApiAgain_AfterCacheExpires()
         {
@@ -271,7 +294,9 @@ namespace WeatherDashboardAPI.Tests
             // Assert
             Assert.That(apiCallCount, Is.EqualTo(2), "After cache expiry, API should be called again");
         }
-
+        /// <summary>
+        /// Ensures that invalid or not found cities return null instead of throwing.
+        /// </summary>
         [Test]
         public async Task GetWeatherAsync_ReturnsNull_WhenCityNotFound()
         {
@@ -300,7 +325,9 @@ namespace WeatherDashboardAPI.Tests
             var result = await service.GetWeatherAsync("InvalidCity", 1);
             Assert.That(result, Is.Null, "Invalid city should return null");
         }
-
+          /// <summary>
+        /// Verifies that DTO deserialization works correctly from a JSON sample.
+        /// </summary>
         [Test]
         public void Deserialize_WeatherApiResponse_WorksCorrectly()
         {
@@ -315,7 +342,10 @@ namespace WeatherDashboardAPI.Tests
             Assert.That(data.Location?.Name, Is.EqualTo("London"));
             Assert.That(data.Current?.TempC, Is.EqualTo(18));
         }
-
+        
+        /// <summary>
+        /// Ensures that the service returns null if the API response contains an "error" field.
+        /// </summary>
         [Test]
         public async Task GetWeatherAsync_ReturnsNull_WhenProviderErrorFieldPresent()
         {
@@ -326,7 +356,9 @@ namespace WeatherDashboardAPI.Tests
             var result = await svc.GetWeatherAsync("London", 1);
             Assert.That(result, Is.Null);
         }
-
+         /// <summary>
+        /// Verifies that <see cref="TaskCanceledException"/> (timeout) results in a null response and is handled gracefully.
+        /// </summary>
         [Test]
         public async Task GetWeatherAsync_ReturnsNull_OnTimeout()
         {

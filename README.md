@@ -112,8 +112,39 @@ dotnet run
 The Swagger URL will automatically open using the below URL - 
 Swagger UI → [http://localhost:5172/swagger/](http://localhost:5172/swagger/)
 
+
+---
+## API Endpoints Overview
+
+| Method | Endpoint | Description | Request Example |
+|---------|-----------|--------------|------------------|
+| **GET** | `/api/weatherdashboard?city=London` | Fetches current weather, hourly, and 5-day forecast for the specified city. | `/api/weather?city=London` |
+| **POST** | `/api/weatherdashboard/default` | Sets a default city (cached in memory for future sessions). | JSON Body: `{ "city": "Paris" }` |
+| **GET** | `/api/weatherdashboard/default` | Returns the currently saved default city (if any). | `/api/weather/default` |
+
 ---
 
+### Example Response
+
+```json
+{
+  "city": "London",
+  "temperature": 19,
+  "humidity": 78,
+  "windSpeed": 10,
+  "description": "Partly Cloudy",
+  "icon": "https://cdn.weatherapi.com/icons/partlycloudy.png",
+  "forecast": [
+    { "date": "2025-10-29", "temp": 20, "description": "Sunny", "icon": "https://cdn.weatherapi.com/icons/sunny.png" },
+    { "date": "2025-10-30", "temp": 18, "description": "Light Rain", "icon": "https://cdn.weatherapi.com/icons/rain.png" }
+  ],
+  "hourly": [
+    { "time": "09:00", "temp": 16, "icon": "https://cdn.weatherapi.com/icons/sunny.png" },
+    { "time": "10:00", "temp": 17, "icon": "https://cdn.weatherapi.com/icons/cloudy.png" },
+    { "time": "11:00", "temp": 19, "icon": "https://cdn.weatherapi.com/icons/partlycloudy.png" }
+  ]
+}
+---
 ## Frontend Setup (React)
 
 ### Prerequisites
