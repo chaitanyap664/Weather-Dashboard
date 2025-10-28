@@ -72,12 +72,17 @@ Weather-Dashboard/
 The Weather Dashboard integrates with external weather APIs (such as **WeatherAPI**) and requires an API key for fetching data.  
 For security reasons, **no real API keys or credentials are committed to this repository**.
 
-## 🔑 API Key Setup (WeatherAPI.com)
+### Environment & Configuration Notes
+- The `.env` file in React only contains the public API base URL — no secrets.
+- `appsettings.json` and `appsettings.Development.json` are kept in the repo for transparency and easy setup.
+- `.gitignore` excludes any sensitive or build-related files.
+
+## API Key Setup (WeatherAPI.com)
 
 This project uses the **[WeatherAPI.com](https://www.weatherapi.com/)** service to fetch live weather and forecast data.  
 You’ll need your own **free API key** to run the backend successfully.
 
-### 🪄 How to Get Your API Key
+### How to Get Your API Key
 1. Go to [https://www.weatherapi.com/](https://www.weatherapi.com/).
 2. Click **“Sign Up”** (it’s free).
 3. After signing in, open the **“My Account → API Keys”** section.
