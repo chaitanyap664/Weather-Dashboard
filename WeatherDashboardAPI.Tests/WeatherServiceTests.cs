@@ -29,7 +29,7 @@ namespace WeatherDashboardAPI.Tests
             _options = Options.Create(new WeatherSettings
             {
                 WeatherApiKey = "fake-key",
-                APIBaseURL = "http://api.weatherapi.com/v1/"
+                APIBaseURL = "http://api.weatherapi.com/v1/" // ✅ ensure trailing slash
             });
         }
 
@@ -86,6 +86,7 @@ namespace WeatherDashboardAPI.Tests
             }";
 
             var httpClient = CreateMockHttpClient(fakeJson);
+            httpClient.BaseAddress = new Uri("http://api.weatherapi.com/");
             var service = new WeatherService(httpClient, _cache, new NullLogger<WeatherService>(), _options);
 
             var result = await service.GetWeatherAsync("London", 1);
@@ -106,6 +107,7 @@ namespace WeatherDashboardAPI.Tests
             }";
 
             var httpClient = CreateMockHttpClient(fakeJson);
+            httpClient.BaseAddress = new Uri("http://api.weatherapi.com/");
             var service = new WeatherService(httpClient, _cache, new NullLogger<WeatherService>(), _options);
 
             var (success, message) = await service.SetDefaultCityAsync("Paris");
@@ -126,6 +128,7 @@ namespace WeatherDashboardAPI.Tests
             }";
 
             var httpClient = CreateMockHttpClient(fuzzyJson);
+            httpClient.BaseAddress = new Uri("http://api.weatherapi.com/");
             var service = new WeatherService(httpClient, _cache, new NullLogger<WeatherService>(), _options);
 
             var (success, message) = await service.SetDefaultCityAsync("D");
@@ -140,6 +143,7 @@ namespace WeatherDashboardAPI.Tests
         public async Task GetDefaultCityAsync_ReturnsNull_WhenNotSet()
         {
             var httpClient = CreateMockHttpClient("{}", HttpStatusCode.OK);
+            httpClient.BaseAddress = new Uri("http://api.weatherapi.com/");
             var service = new WeatherService(httpClient, _cache, new NullLogger<WeatherService>(), _options);
 
             var city = await service.GetDefaultCityAsync();
@@ -183,6 +187,7 @@ namespace WeatherDashboardAPI.Tests
                 });
 
             var httpClient = new HttpClient(handler.Object);
+            httpClient.BaseAddress = new Uri("http://api.weatherapi.com/");
             var service = new WeatherService(httpClient, _cache, new NullLogger<WeatherService>(), _options);
 
             // Act — first call (should call API)
@@ -199,23 +204,24 @@ namespace WeatherDashboardAPI.Tests
             Assert.That(result2!.City, Is.EqualTo("London"));
             Assert.That(apiCallCount, Is.EqualTo(1), "Second call should not call API again — cache hit");
 
-            // Extra: confirm same reference if desired
+            // Extra: confirm same reference
             Assert.That(ReferenceEquals(result1, result2), Is.True, "Cached result should be same object instance");
         }
+
         [Test]
         public async Task GetWeatherAsync_CallsApiAgain_AfterCacheExpires()
         {
             // Arrange
             string fakeJson = @"{
-        ""location"": { ""name"": ""Paris"" },
-        ""current"": { 
-            ""temp_c"": 25, 
-            ""humidity"": 40, 
-            ""wind_kph"": 12, 
-            ""condition"": { ""text"": ""Sunny"", ""icon"": ""//cdn.weatherapi.com/sunny.png"" } 
-        },
-        ""forecast"": { ""forecastday"": [] }
-    }";
+                ""location"": { ""name"": ""Paris"" },
+                ""current"": { 
+                    ""temp_c"": 25, 
+                    ""humidity"": 40, 
+                    ""wind_kph"": 12, 
+                    ""condition"": { ""text"": ""Sunny"", ""icon"": ""//cdn.weatherapi.com/sunny.png"" } 
+                },
+                ""forecast"": { ""forecastday"": [] }
+            }";
 
             int apiCallCount = 0;
 
@@ -237,11 +243,12 @@ namespace WeatherDashboardAPI.Tests
                 });
 
             var httpClient = new HttpClient(handler.Object);
+            httpClient.BaseAddress = new Uri("http://api.weatherapi.com/");
             var cache = new MemoryCache(new MemoryCacheOptions());
             var options = Options.Create(new WeatherSettings
             {
                 WeatherApiKey = "fake-key",
-                APIBaseURL = "http://fake-api.com"
+                APIBaseURL = "http://fake-api.com/"
             });
 
             // inject short TTL of 2 seconds
@@ -256,7 +263,7 @@ namespace WeatherDashboardAPI.Tests
             Assert.That(apiCallCount, Is.EqualTo(1), "Second call should use cache");
 
             // Wait for cache to expire
-            await Task.Delay(TimeSpan.FromSeconds(3));
+            await Task.Delay(TimeSpan.FromSeconds(4));
 
             // Act — third call (cache expired)
             var result3 = await service.GetWeatherAsync("Paris", 1);
@@ -264,10 +271,10 @@ namespace WeatherDashboardAPI.Tests
             // Assert
             Assert.That(apiCallCount, Is.EqualTo(2), "After cache expiry, API should be called again");
         }
+
         [Test]
         public async Task GetWeatherAsync_ReturnsNull_WhenCityNotFound()
         {
-            // Arrange
             var handler = new Mock<HttpMessageHandler>();
             handler.Protected()
                 .Setup<Task<HttpResponseMessage>>(
@@ -282,21 +289,18 @@ namespace WeatherDashboardAPI.Tests
                 });
 
             var httpClient = new HttpClient(handler.Object);
-            var cache = new MemoryCache(new MemoryCacheOptions());
             var options = Options.Create(new WeatherSettings
             {
                 WeatherApiKey = "fake-key",
-                APIBaseURL = "http://fake-api.com"
+                APIBaseURL = "http://fake-api.com/"
             });
 
-            var service = new WeatherService(httpClient, cache, new NullLogger<WeatherService>(), options);
+            var service = new WeatherService(httpClient, _cache, new NullLogger<WeatherService>(), options);
 
-            // Act
             var result = await service.GetWeatherAsync("InvalidCity", 1);
-
-            // Assert
             Assert.That(result, Is.Null, "Invalid city should return null");
         }
+
         [Test]
         public void Deserialize_WeatherApiResponse_WorksCorrectly()
         {
@@ -311,6 +315,7 @@ namespace WeatherDashboardAPI.Tests
             Assert.That(data.Location?.Name, Is.EqualTo("London"));
             Assert.That(data.Current?.TempC, Is.EqualTo(18));
         }
+
         [Test]
         public async Task GetWeatherAsync_ReturnsNull_WhenProviderErrorFieldPresent()
         {
@@ -319,9 +324,9 @@ namespace WeatherDashboardAPI.Tests
             var svc = new WeatherService(http, _cache, new NullLogger<WeatherService>(), _options);
 
             var result = await svc.GetWeatherAsync("London", 1);
-
             Assert.That(result, Is.Null);
         }
+
         [Test]
         public async Task GetWeatherAsync_ReturnsNull_OnTimeout()
         {
@@ -344,9 +349,7 @@ namespace WeatherDashboardAPI.Tests
             var svc = new WeatherService(http, _cache, new NullLogger<WeatherService>(), _options);
 
             var result = await svc.GetWeatherAsync("London", 1);
-
             Assert.That(result, Is.Null);
         }
-
     }
 }

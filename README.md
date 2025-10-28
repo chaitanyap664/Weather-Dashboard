@@ -213,11 +213,62 @@ This ensures the API:
 - Deploy on Azure App Service + Static Web App combo  
 
 ---
+## Scaling Strategy
+
+The **Weather Dashboard** application is designed with a clean, modular architecture — consisting of a **React front-end** and a **.NET 8 Web API**.  
+While the current setup efficiently supports moderate user traffic, it can be **scaled horizontally and hardened for production** with minimal changes.
+
+---
+
+### Current Design Highlights
+
+- **Frontend:** React + Vite + Tailwind CSS hosted on Azure Static Web Apps (CDN-backed for global reach).  
+- **Backend:** ASP.NET Core Web API hosted on Azure App Service, leveraging:
+  - `IMemoryCache` for 5-minute per-city caching.
+  - Polly retry and timeout policies for transient error handling.
+  - Configurable base URL and API key stored in `appsettings.json` or environment variables.
+- **Resilience:** Graceful handling of timeouts, invalid city names, and API failures.
+- **Architecture:** Stateless API design ensures easy horizontal scaling.
+
+---
+
+### Future Scalability Enhancements
+
+| Area | Enhancement | Benefit |
+|------|--------------|----------|
+| **Caching Layer** | Replace `IMemoryCache` with **Redis / Azure Cache for Redis** (`IDistributedCache`) | Enables shared caching across all API instances; improves consistency and performance under load |
+| **Hosting** | Enable **Azure App Service Auto-Scaling** | Automatically adjusts instance count based on CPU or request load |
+| **Resilience** | Add **Circuit Breaker** and **Rate Limiter** (via Polly / .NET middleware) | Prevents cascading failures and throttles high-frequency requests |
+| **Observability** | Integrate **Azure Application Insights** | End-to-end monitoring of request latency, dependency health, and exception tracking |
+| **Configuration & Secrets** | Use **Azure Key Vault** for secrets and API keys | Centralized, secure management of sensitive configuration |
+| **Deployment** | Introduce **CI/CD pipelines** (GitHub Actions / Azure DevOps YAML) | Automated build, test, and environment deployments (Dev / UAT / Prod) |
+| **Security** | Add **JWT / Entra ID (Azure AD)** authentication (if user personalization required) | Protects APIs and supports user-specific default city settings |
+| **Cache Refresh Policy** | Implement **stale-while-revalidate** or **refresh-ahead background service** | Keeps frequently requested city data up-to-date with minimal latency |
+| **External API Management** | Integrate **Azure API Management** | Centralized traffic control, caching, and usage analytics |
+
+---
+
+### Scalability Principles Followed
+
+- **Stateless API:** Each request is independent, simplifying horizontal scaling.  
+- **Caching & Retry Policies:** Reduce dependency load and improve response speed.  
+- **Separation of Concerns:** Clear distinction between UI, API, and data layers.  
+- **Environment Configurations:** All critical values (API keys, URLs, cache durations) are configurable via environment or settings files.  
+- **Extensibility:** Easy to introduce new features or replace components (e.g., Redis, distributed tracing) without changing core logic.
+
+---
+
+### Summary
+
+The current architecture already achieves an optimal balance between **simplicity**, **performance**, and **reliability** for demonstration and small-scale production use.  
+As traffic grows, enhancements such as **distributed caching**, **auto-scaling**, and **advanced observability** can be added seamlessly to evolve the system into a robust, enterprise-grade platform.
+
+---
+
 
 ## License
 
 MIT License © 2025 — Developed by **Srinivasa Chaitanya Ponnada**  
-For learning and demonstration purposes only.
 
 ---
 

@@ -17,9 +17,10 @@ builder.Services.Configure<WeatherSettings>(
     builder.Configuration.GetSection("WeatherSettings"));
 
 //Register typed HttpClient for WeatherService with Polly policies
+var apiBaseUrl = builder.Configuration["WeatherSettings:APIBaseURL"] ?? "https://api.weatherapi.com/";
 builder.Services.AddHttpClient<IWeatherService, WeatherService>(client =>
 {
-    client.BaseAddress = new Uri("https://api.weatherapi.com/");
+    client.BaseAddress = new Uri(apiBaseUrl);
     client.Timeout = Timeout.InfiniteTimeSpan; // important so Polly controls timeout
 })
 .AddPolicyHandler(GetRetryPolicy())

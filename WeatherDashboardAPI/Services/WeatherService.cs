@@ -39,10 +39,10 @@ namespace WeatherDashboardAPI.Services
             string cacheWeatherKey = $"weather_{city.Trim().ToLowerInvariant()}_{days}";
             if (_cache.TryGetValue(cacheWeatherKey, out WeatherInfo? cachedWeather))
                 return cachedWeather;
-            var url = $"{_settings.APIBaseURL}?key={_settings.WeatherApiKey}&q={Uri.EscapeDataString(city)}&days={days}&aqi=no&alerts=no";
+            var relativeUrl = $"v1/forecast.json?key={_settings.WeatherApiKey}&q={Uri.EscapeDataString(city)}&days={days}&aqi=no&alerts=no";
             try
             {
-                var response = await _httpClient.GetAsync(url, ct);
+                var response = await _httpClient.GetAsync(relativeUrl, ct);
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogWarning("Weather API failed for {City} with {Code}", city, response.StatusCode);
