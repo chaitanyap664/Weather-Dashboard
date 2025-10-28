@@ -40,11 +40,7 @@ TestResults/
 launchSettings.json
 appsettings.Development.json
 appsettings.*.local.json
-<<<<<<< HEAD
 appsettings.json
-=======
-appsettings.*.local.json
->>>>>>> ec642235e4e4ae662447a9a8cba46bc1d0e9cf0b
 
 # =========================
 # .NET Publish / Artifacts
