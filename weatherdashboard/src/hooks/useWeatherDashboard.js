@@ -42,7 +42,7 @@ export function useWeatherDashboard() {
     setTimeout(() => {
       setError("");
       setMessage("");
-    }, 3000);
+    }, 5000);
   }
 };
 
@@ -115,7 +115,7 @@ export function useWeatherDashboard() {
         showTempMessage(`Showing weather for your default city: ${city}`);
       }
     } catch {
-      // ignore
+       console.warn("Could not load default city:", err);
     }
   })();
 
