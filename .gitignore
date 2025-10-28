@@ -40,6 +40,7 @@ TestResults/
 launchSettings.json
 appsettings.Development.json
 appsettings.*.local.json
+appsettings.json
 
 # =========================
 # .NET Publish / Artifacts
